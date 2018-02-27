@@ -23,6 +23,7 @@ public class Aplicacion {
         int op = 0, añoPublicacion, copias = 0;
         String nombreBiblioteca, nombreSocio, dni, titulo, autor, ISBN, genero;
         boolean disponible=false;
+        int año, mes, dia;
         
         Calendar fechaAlta = Calendar.getInstance();
         Calendar fechaPrestamo=Calendar.getInstance();
@@ -94,9 +95,10 @@ public class Aplicacion {
                         if (libroActivo != null) {
                             disponible=biblio.comprobarCopias(libroActivo);
                             if(disponible){
-                                libro.modificarDevolucion(fechaPrestamo);
-                                
+                                fechaDevolucion=fechaPrestamo;
+                                fechaDevolucion.add(Calendar.DATE, 7);
                                 prestamo=new Prestamos(fechaPrestamo, fechaDevolucion, socioActivo);
+                                libroActivo.añadirPrestamo(prestamo);
                             }else{
                                 System.out.println("No hay copias disponibles, vuelve a intentarlo otro día");
                             }
@@ -123,7 +125,24 @@ public class Aplicacion {
                     break;
 
                 case 6:
+                    System.out.println("Año: ");
+                    año = teclado.nextInt();
+                    System.out.println("Mes: ");
+                    mes = teclado.nextInt();
+                    System.out.println("Día: ");
+                    dia = teclado.nextInt();
 
+                    fechaDevolucion.set(año, mes, dia);
+                    
+                    ArrayList<Socios>devoluciones=new ArrayList<Socios>();
+                    
+                    
+                    for (Libros lib : biblio.getLibros()) {
+                        devoluciones=lib.listarDevoluciones(fechaDevolucion);
+                        mostrarDevoluciones(devoluciones);
+                    }
+                    
+                    
                     break;
 
                 case 7:
@@ -132,6 +151,10 @@ public class Aplicacion {
                     ArrayList<Libros> generoLibros = new ArrayList<Libros>();
                     generoLibros = biblio.listadoGeneros(genero);
                     mostrarListadoGenero(generoLibros);
+                    break;
+                    
+                case 0:
+                    System.out.println("Saliendo");
                     break;
 
                 default:
@@ -154,6 +177,12 @@ public class Aplicacion {
     public static void mostrarListadoGenero(ArrayList<Libros> generoLibros) {
         for (Libros libro : generoLibros) {
             System.out.println(libro);
+        }
+    }
+
+    public static void mostrarDevoluciones(ArrayList<Socios> devoluciones) {
+        for (Socios dev : devoluciones) {
+            System.out.println(dev);
         }
     }
 

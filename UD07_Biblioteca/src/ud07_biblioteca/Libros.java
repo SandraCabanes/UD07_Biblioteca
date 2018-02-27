@@ -35,6 +35,21 @@ public class Libros {
         this.prestamo = new ArrayList<Prestamos>();
     }
 
+    public void añadirPrestamo(Prestamos p){
+        prestamo.add(p);
+    }
+    
+    public ArrayList listarDevoluciones(Calendar fechaDevolucion){
+        ArrayList<Socios> listaSocios=new ArrayList<Socios>();
+        for (Prestamos prestamos : prestamo) {
+            if(prestamos.getFechaDevolucion().after(fechaDevolucion)){
+                Socios s=prestamos.getSocio();
+                listaSocios.add(s);
+            }
+        }
+        return listaSocios;
+    }
+    
     @Override
     public String toString() {
         return "Libros{" + "titulo=" + titulo + ", autor=" + autor + ", ISBN=" + ISBN + ", a\u00f1oPublicacion=" + añoPublicacion + ", genero=" + genero + ", prestamo=" + prestamo + '}';
