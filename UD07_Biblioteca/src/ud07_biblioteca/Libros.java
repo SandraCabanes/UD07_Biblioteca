@@ -13,23 +13,31 @@ import java.util.Calendar;
  * @author mati
  */
 public class Libros {
+
     private String titulo;
     private String autor;
     private String ISBN;
-    private Calendar añoPublicacion;
+    private int añoPublicacion;
     private String genero;
+    private int copias;
     private ArrayList<Prestamos> prestamo;
 
     public Libros() {
     }
 
-    public Libros(String titulo, String autor, String ISBN, Calendar añoPublicacion, String genero) {
+    public Libros(String titulo, String autor, String ISBN, int añoPublicacion, String genero) {
         this.titulo = titulo;
         this.autor = autor;
         this.ISBN = ISBN;
         this.añoPublicacion = añoPublicacion;
         this.genero = genero;
-        this.prestamo=new ArrayList<Prestamos>();
+        this.copias = 5;
+        this.prestamo = new ArrayList<Prestamos>();
+    }
+
+    @Override
+    public String toString() {
+        return "Libros{" + "titulo=" + titulo + ", autor=" + autor + ", ISBN=" + ISBN + ", a\u00f1oPublicacion=" + añoPublicacion + ", genero=" + genero + ", prestamo=" + prestamo + '}';
     }
 
     public String getTitulo() {
@@ -56,16 +64,20 @@ public class Libros {
         this.ISBN = ISBN;
     }
 
-    public Calendar getAñoPublicacion() {
+    public int getAñoPublicacion() {
         return añoPublicacion;
     }
 
-    public void setAñoPublicacion(Calendar añoPublicacion) {
+    public void setAñoPublicacion(int añoPublicacion) {
         this.añoPublicacion = añoPublicacion;
     }
 
     public String getGenero() {
         return genero;
+    }
+
+    public int getCopias() {
+        return copias;
     }
 
     public void setGenero(String genero) {
@@ -79,6 +91,11 @@ public class Libros {
     public void setPrestamo(ArrayList<Prestamos> prestamo) {
         this.prestamo = prestamo;
     }
+
+    public void setCopias(int copias) {
+        this.copias = copias;
+    }
     
     
+
 }

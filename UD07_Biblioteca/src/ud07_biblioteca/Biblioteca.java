@@ -24,6 +24,51 @@ public class Biblioteca {
         this.libros=new ArrayList<Libros>();
         this.socios=new ArrayList<Socios>();
     }
+    
+    public void añadirLibro(Libros l){
+        libros.add(l);
+    }
+    
+    public void mostrarLibros(){
+        for (Libros libro : libros) {
+            System.out.println(libro);
+        }
+    }
+    
+    public Socios buscarSocio(String dni){
+        for (Socios s : socios) {
+            if(s.getDni().equalsIgnoreCase(dni)){
+                return s;
+            }
+        }
+        return null;
+    }
+    
+    public Libros buscarLibro(String ISBN){
+        for (Libros libro : libros) {
+            if(libro.getISBN().equalsIgnoreCase(ISBN)){
+                return libro;
+            }
+        }
+        return null;
+    }
+    
+    public boolean comprobarCopias(Libros libroActivo){
+        if(libroActivo.getCopias()>0){
+            return true;
+        }
+        return false;
+    }
+    
+    public ArrayList listadoGeneros(String genero){
+        ArrayList<Libros> generoLibros=new ArrayList<Libros>();
+        for (Libros listadoLibros : libros) {
+            if(listadoLibros.getGenero().equalsIgnoreCase(genero)){
+                generoLibros.add(listadoLibros);
+            }
+        }
+        return generoLibros;
+    }
 
     public String getNombre() {
         return nombre;
