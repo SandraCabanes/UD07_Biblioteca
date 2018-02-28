@@ -12,32 +12,30 @@ import java.util.Calendar;
  * @author mati
  */
 public class Socios {
-    private String dni;
+    private String id;
     private String nombre;
     private Calendar fechaAlta;
 
     public Socios() {
     }
 
-    public Socios(String dni, String nombre, Calendar fechaAlta) {
-        this.dni = dni;
+    public Socios(String id, String nombre, Calendar fechaAlta) {
+        this.id = id;
         this.nombre = nombre;
         this.fechaAlta = fechaAlta;
     }
 
     @Override
     public String toString() {
-        return "Socios{" + "dni=" + dni + ", nombre=" + nombre + ", fechaAlta=" + fechaAlta.getTime() + '}';
+        return "Socios{" + "id=" + id + ", nombre=" + nombre + ", fechaAlta=" + fechaAlta.getTime() + '}';
     }
 
-    
-    
-    public String getDni() {
-        return dni;
+    public String getId() {
+        return id;
     }
 
-    public void setDni(String dni) {
-        this.dni = dni;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getNombre() {

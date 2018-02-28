@@ -13,84 +13,104 @@ import java.util.Calendar;
  * @author mati
  */
 public class Biblioteca {
+
     private String nombre;
     private ArrayList<Libros> libros;
     private ArrayList<Socios> socios;
-
+    
     public Biblioteca() {
     }
-
+    
     public Biblioteca(String nombre) {
         this.nombre = nombre;
-        this.libros=new ArrayList<Libros>();
-        this.socios=new ArrayList<Socios>();
+        this.libros = new ArrayList<Libros>();
+        this.socios = new ArrayList<Socios>();
     }
     
-    public void añadirLibro(Libros l){
+    public void añadirLibro(Libros l) {
         libros.add(l);
     }
     
-    public void mostrarLibros(){
+    public void añadirSocio(Socios s) {
+        socios.add(s);
+    }
+    
+    public void mostrarLibros() {
         for (Libros libro : libros) {
             System.out.println(libro);
         }
     }
     
-    public Socios buscarSocio(String dni){
+    public Socios buscarSocio(String dni) {
         for (Socios s : socios) {
-            if(s.getDni().equalsIgnoreCase(dni)){
+            if (s.getId().equalsIgnoreCase(dni)) {
                 return s;
             }
         }
         return null;
     }
     
-    public Libros buscarLibro(String ISBN){
+    public Libros buscarLibro(String ISBN) {
         for (Libros libro : libros) {
-            if(libro.getISBN().equalsIgnoreCase(ISBN)){
+            if (libro.getISBN().equalsIgnoreCase(ISBN)) {
                 return libro;
             }
         }
         return null;
     }
     
-    public boolean comprobarCopias(Libros libroActivo){
-        if(libroActivo.getCopias()>0){
+    public boolean comprobarCopias(Libros libroActivo) {
+        if (libroActivo.getCopias() > 0) {
             return true;
         }
         return false;
     }
     
-    public ArrayList listadoGeneros(String genero){
-        ArrayList<Libros> generoLibros=new ArrayList<Libros>();
+    public ArrayList listadoGeneros(String genero) {
+        ArrayList<Libros> generoLibros = new ArrayList<Libros>();
         for (Libros listadoLibros : libros) {
-            if(listadoLibros.getGenero().equalsIgnoreCase(genero)){
+            if (listadoLibros.getGenero().equalsIgnoreCase(genero)) {
                 generoLibros.add(listadoLibros);
             }
         }
         return generoLibros;
     }
-
+    
+    public ArrayList listadoDevoluciones(Calendar fecha) {
+        ArrayList<Socios> listadoDevoluciones = new ArrayList<Socios>();
+        for (Libros libro : libros) {
+            ArrayList<Prestamos> prest = libro.getPrestamo();
+            for (Prestamos prestamos : prest) {
+//                if (prestamos.getFechaDevolucion().getTime().after(fecha.getTime())) {
+                    System.out.println(prestamos.getFechaDevolucion().getTime());
+                    listadoDevoluciones.add(prestamos.getSocio());
+//                }
+                
+            }
+        }
+        return listadoDevoluciones;
+    }
+    
     public String getNombre() {
         return nombre;
     }
-
+    
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
+    
     public ArrayList<Libros> getLibros() {
         return libros;
     }
-
+    
     public void setLibros(ArrayList<Libros> libros) {
         this.libros = libros;
     }
-
+    
     public ArrayList<Socios> getSocios() {
         return socios;
     }
-
+    
     public void setSocios(ArrayList<Socios> socios) {
         this.socios = socios;
     }

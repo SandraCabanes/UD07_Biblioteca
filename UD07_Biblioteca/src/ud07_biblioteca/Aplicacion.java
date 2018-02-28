@@ -8,6 +8,7 @@ package ud07_biblioteca;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Scanner;
+import java.util.TimeZone;
 
 /**
  *
@@ -21,13 +22,14 @@ public class Aplicacion {
     public static void main(String[] args) {
         Scanner teclado = new Scanner(System.in);
         int op = 0, añoPublicacion, copias = 0;
-        String nombreBiblioteca, nombreSocio, dni, titulo, autor, ISBN, genero;
-        boolean disponible=false;
+        String nombreBiblioteca, nombreSocio, idSocio, titulo, autor, ISBN, genero;
+        boolean disponible = false;
         int año, mes, dia;
-        
+
         Calendar fechaAlta = Calendar.getInstance();
-        Calendar fechaPrestamo=Calendar.getInstance();
-        Calendar fechaDevolucion=Calendar.getInstance();
+        Calendar fechaPrestamo = Calendar.getInstance();
+        Calendar fechaDevolucion = Calendar.getInstance();
+        
         
         Biblioteca biblio = null;
         Socios socioActivo;
@@ -51,15 +53,16 @@ public class Aplicacion {
 
                 case 2:
                     do {
-                        System.out.print("DNI: ");
-                        dni = teclado.nextLine();
-                        socioActivo = biblio.buscarSocio(dni);
+                        System.out.print("ID: ");
+                        idSocio = teclado.nextLine();
+                        socioActivo = biblio.buscarSocio(idSocio);
                     } while (socioActivo != null);
 
-                    System.out.println("Nombre: ");
+                    System.out.print("Nombre: ");
                     nombreSocio = teclado.nextLine();
 
-                    socioActivo = new Socios(dni, nombreSocio, fechaAlta);
+                    socioActivo = new Socios(idSocio, nombreSocio, fechaAlta);
+                    biblio.añadirSocio(socioActivo);
                     break;
 
                 case 3:
@@ -81,25 +84,27 @@ public class Aplicacion {
                     genero = teclado.nextLine();
 
                     libroActivo = new Libros(titulo, autor, ISBN, añoPublicacion, genero);
+                    biblio.añadirLibro(libroActivo);
                     break;
 
                 case 4:
-                    System.out.print("DNI: ");
-                    dni = teclado.nextLine();
-                    socioActivo = biblio.buscarSocio(dni);
+                    System.out.print("ID: ");
+                    idSocio = teclado.nextLine();
+                    socioActivo = biblio.buscarSocio(idSocio);
                     if (socioActivo != null) {
                         biblio.mostrarLibros();
                         System.out.print("ISBN: ");
                         ISBN = teclado.nextLine();
                         libroActivo = biblio.buscarLibro(ISBN);
                         if (libroActivo != null) {
-                            disponible=biblio.comprobarCopias(libroActivo);
-                            if(disponible){
-                                fechaDevolucion=fechaPrestamo;
+                            disponible = biblio.comprobarCopias(libroActivo);
+                            if (disponible) {
                                 fechaDevolucion.add(Calendar.DATE, 7);
-                                prestamo=new Prestamos(fechaPrestamo, fechaDevolucion, socioActivo);
+//                                fechaDevolucion.setTimeZone(TimeZone.getTimeZone("Europe/Madrid"));
+                                prestamo = new Prestamos(fechaPrestamo, fechaDevolucion, socioActivo);
                                 libroActivo.añadirPrestamo(prestamo);
-                            }else{
+                                System.out.println("La fecha de devolución es el: " + fechaDevolucion.getTime());
+                            } else {
                                 System.out.println("No hay copias disponibles, vuelve a intentarlo otro día");
                             }
                         } else {
@@ -118,13 +123,15 @@ public class Aplicacion {
                     if (libroActivo != null) {
                         System.out.print("Copias a añadir: ");
                         copias = teclado.nextInt();
-                        libroActivo.setCopias(copias);
+                        libroActivo.añadirCopias(copias);
+                        System.out.println("Actualmente hay "+libroActivo.getCopias()+" copias existentes.");
                     } else {
                         System.out.println("El libro no está disponible en la biblioteca");
                     }
                     break;
 
                 case 6:
+                    
                     System.out.println("Año: ");
                     año = teclado.nextInt();
                     System.out.println("Mes: ");
@@ -133,16 +140,12 @@ public class Aplicacion {
                     dia = teclado.nextInt();
 
                     fechaDevolucion.set(año, mes, dia);
-                    
-                    ArrayList<Socios>devoluciones=new ArrayList<Socios>();
-                    
-                    
-                    for (Libros lib : biblio.getLibros()) {
-                        devoluciones=lib.listarDevoluciones(fechaDevolucion);
-                        mostrarDevoluciones(devoluciones);
-                    }
-                    
-                    
+
+                    ArrayList<Socios> devoluciones = new ArrayList<Socios>();
+
+                    devoluciones = biblio.listadoDevoluciones(fechaDevolucion);
+                    mostrarDevoluciones(devoluciones);
+
                     break;
 
                 case 7:
@@ -152,7 +155,37 @@ public class Aplicacion {
                     generoLibros = biblio.listadoGeneros(genero);
                     mostrarListadoGenero(generoLibros);
                     break;
+
+                case 8:
+                    biblio.mostrarLibros();
+                    break;
+
+                case 9:
+                    biblio = new Biblioteca("municipal");
+
+                    socioActivo = new Socios("123", "Marta", fechaAlta);
+                    biblio.añadirSocio(socioActivo);
+
+                    socioActivo = new Socios("456", "Juan", fechaAlta);
+                    biblio.añadirSocio(socioActivo);
+
+                    libroActivo = new Libros("Los pilares de la tierra", "Ken Follett", "147", 1987, "histórica");
+                    biblio.añadirLibro(libroActivo);
+
+                    libroActivo = new Libros("Neverwhere", "Neil Gaiman", "258", 2000, "fantasía");
+                    biblio.añadirLibro(libroActivo);
+
+                    libroActivo = new Libros("El Resplandor", "Stephen King", "369", 1990, "suspense");
+                    biblio.añadirLibro(libroActivo);
+
+                    libroActivo = new Libros("Harry Potter y la piedra filosofal", "J.K.Rowling", "789", 1990, "juvenil");
+                    biblio.añadirLibro(libroActivo);
                     
+                    prestamo = new Prestamos(fechaPrestamo, fechaDevolucion.getInstance(), socioActivo);
+                    libroActivo.añadirPrestamo(prestamo);
+                    
+                    break;
+
                 case 0:
                     System.out.println("Saliendo");
                     break;
@@ -170,7 +203,7 @@ public class Aplicacion {
                 + "3- Dar de alta un libro\n"
                 + "4- Préstamo de libros\n"
                 + "5- Añadir copias\n"
-                + "6- Listado de socios que todavía no han devuelto los libros\n"
+                + "6- Lista de devoluciones\n"
                 + "7- Listado de libros por género");
     }
 

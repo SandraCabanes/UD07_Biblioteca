@@ -31,12 +31,24 @@ public class Libros {
         this.ISBN = ISBN;
         this.añoPublicacion = añoPublicacion;
         this.genero = genero;
-        this.copias = 5;
+        this.copias = 2;
         this.prestamo = new ArrayList<Prestamos>();
+    }
+    
+    public void añadirCopias(int copias){
+        this.copias+=copias;
+        
     }
 
     public void añadirPrestamo(Prestamos p){
         prestamo.add(p);
+        this.copias--;
+    }
+    
+    public void mostrarPrestamos(){
+        for (Prestamos prestamos : prestamo) {
+            System.out.println(prestamos);
+        }
     }
     
     public ArrayList listarDevoluciones(Calendar fechaDevolucion){
