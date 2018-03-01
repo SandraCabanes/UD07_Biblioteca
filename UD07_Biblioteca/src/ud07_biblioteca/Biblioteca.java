@@ -82,7 +82,7 @@ public class Biblioteca {
             ArrayList<Prestamos> prest = libro.getPrestamo();
             for (Prestamos prestamos : prest) {
 //                if (prestamos.getFechaDevolucion().getTime().after(fecha.getTime())) {
-                    System.out.println(prestamos.getFechaDevolucion().getTime());
+//                    System.out.println(prestamos.getFechaDevolucion().getTime());
                     listadoDevoluciones.add(prestamos.getSocio());
 //                }
                 

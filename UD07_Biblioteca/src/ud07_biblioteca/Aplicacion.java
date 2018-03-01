@@ -29,8 +29,7 @@ public class Aplicacion {
         Calendar fechaAlta = Calendar.getInstance();
         Calendar fechaPrestamo = Calendar.getInstance();
         Calendar fechaDevolucion = Calendar.getInstance();
-        
-        
+
         Biblioteca biblio = null;
         Socios socioActivo;
         Libros libroActivo;
@@ -116,6 +115,25 @@ public class Aplicacion {
                     break;
 
                 case 5:
+                    System.out.print("ID: ");
+                    idSocio = teclado.nextLine();
+                    socioActivo = biblio.buscarSocio(idSocio);
+                    if (socioActivo != null) {
+                        biblio.mostrarLibros();
+                        System.out.print("ISBN: ");
+                        ISBN = teclado.nextLine();
+                        libroActivo = biblio.buscarLibro(ISBN);
+                        if (libroActivo != null) {
+                            libroActivo.añadirCopias(1);
+                        } else {
+                            System.out.println("El libro no está disponible en la biblioteca");
+                        }
+                    } else {
+                        System.out.println("El socio no está registrado en la biblioteca");
+                    }
+                    break;
+
+                case 6:
 
                     System.out.print("ISBN: ");
                     ISBN = teclado.nextLine();
@@ -124,14 +142,14 @@ public class Aplicacion {
                         System.out.print("Copias a añadir: ");
                         copias = teclado.nextInt();
                         libroActivo.añadirCopias(copias);
-                        System.out.println("Actualmente hay "+libroActivo.getCopias()+" copias existentes.");
+                        System.out.println("Actualmente hay " + libroActivo.getCopias() + " copias existentes.");
                     } else {
                         System.out.println("El libro no está disponible en la biblioteca");
                     }
                     break;
 
-                case 6:
-                    
+                case 7:
+
                     System.out.println("Año: ");
                     año = teclado.nextInt();
                     System.out.println("Mes: ");
@@ -148,7 +166,7 @@ public class Aplicacion {
 
                     break;
 
-                case 7:
+                case 8:
                     System.out.print("Género [fantasía, histórica, romántica, suspense, juvenil]: ");
                     genero = teclado.nextLine();
                     ArrayList<Libros> generoLibros = new ArrayList<Libros>();
@@ -156,12 +174,12 @@ public class Aplicacion {
                     mostrarListadoGenero(generoLibros);
                     break;
 
-                case 8:
+                case 9:
                     biblio.mostrarLibros();
                     break;
 
-                case 9:
-                    biblio = new Biblioteca("municipal");
+                case 10:
+                    biblio = new Biblioteca("Municipal");
 
                     socioActivo = new Socios("123", "Marta", fechaAlta);
                     biblio.añadirSocio(socioActivo);
@@ -180,10 +198,10 @@ public class Aplicacion {
 
                     libroActivo = new Libros("Harry Potter y la piedra filosofal", "J.K.Rowling", "789", 1990, "juvenil");
                     biblio.añadirLibro(libroActivo);
-                    
+
                     prestamo = new Prestamos(fechaPrestamo, fechaDevolucion.getInstance(), socioActivo);
                     libroActivo.añadirPrestamo(prestamo);
-                    
+
                     break;
 
                 case 0:
@@ -202,9 +220,12 @@ public class Aplicacion {
                 + "2- Dar de alta un socio\n"
                 + "3- Dar de alta un libro\n"
                 + "4- Préstamo de libros\n"
-                + "5- Añadir copias\n"
-                + "6- Lista de devoluciones\n"
-                + "7- Listado de libros por género");
+                + "5- Devolver libro\n"
+                + "6- Añadir copias\n"
+                + "7- Lista de socios que tienen devoluciones pendientes\n"
+                + "8- Listado de libros por género\n"
+                + "9- Lista de libros disponibles\n"
+                + "10- Cargar datos automáticamente");
     }
 
     public static void mostrarListadoGenero(ArrayList<Libros> generoLibros) {
